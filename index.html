@@ -3,78 +3,226 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Conquer Pike Place</title>
-  <meta name="description" content="Scan the code, claim the zone, and battle for influence in the real world." />
+  <title>Digital Conquest — World Under Construction</title>
+  <meta name="description" content="Thanks for your interest. The world is under construction. Join the first-call list." />
   <style>
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      color: #eef4ff;
-      background: linear-gradient(180deg, #0b0d16, #101a33);
-      min-height: 100vh;
+    :root{
+      --bg0:#070913;
+      --bg1:#0b1430;
+      --fg:#eef4ff;
+      --muted:#b6c2dd;
+      --accent:#00dcff;
+      --accent2:#7a5cff;
+      --card:rgba(255,255,255,0.06);
+      --stroke:rgba(255,255,255,0.12);
+      --good:#00ffb3;
+      --warn:#ffd36a;
     }
-    .wrap {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 40px 20px;
-      text-align: center;
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial;
+      color:var(--fg);
+      min-height:100vh;
+      background:
+        radial-gradient(900px 520px at 15% 10%, rgba(0,220,255,0.18), transparent 60%),
+        radial-gradient(900px 620px at 80% 20%, rgba(122,92,255,0.18), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow-x:hidden;
     }
-    h1 {
-      font-size: 42px;
-      margin-bottom: 12px;
+    .wrap{max-width:980px;margin:0 auto;padding:28px 18px 70px;}
+    .top{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
     }
-    .accent {
-      color: #00dcff;
+    .brand{display:flex;align-items:center;gap:12px;}
+    .logo{
+      width:42px;height:42px;border-radius:14px;
+      background:linear-gradient(135deg, rgba(0,220,255,0.95), rgba(122,92,255,0.95));
+      box-shadow:0 0 34px rgba(0,220,255,0.18);
+      position:relative;
     }
-    p {
-      color: #b6c2dd;
-      font-size: 18px;
-      line-height: 1.5;
+    .logo:after{
+      content:"";
+      position:absolute;inset:-10px;
+      border-radius:18px;
+      background:radial-gradient(circle, rgba(0,220,255,0.18), transparent 60%);
+      filter:blur(2px);
+      z-index:-1;
     }
-    .card {
-      margin-top: 32px;
-      padding: 24px;
-      border-radius: 16px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,0.04);
+      padding:10px 12px;border-radius:999px;
+      color:var(--muted);font-size:13px;
     }
-    .btn {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 14px 22px;
-      border-radius: 12px;
-      background: rgba(0,220,255,0.15);
-      color: #eef4ff;
-      font-weight: 600;
-      text-decoration: none;
-      border: 1px solid rgba(0,220,255,0.4);
+    .grid{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap:16px;
     }
-    .hint {
-      margin-top: 24px;
-      font-size: 14px;
-      color: #9aa6c8;
+    @media (max-width: 880px){ .grid{grid-template-columns:1fr;} }
+    .card{
+      border:1px solid var(--stroke);
+      background:var(--card);
+      border-radius:20px;
+      padding:18px;
+      backdrop-filter: blur(8px);
+    }
+    h1{
+      margin:0;
+      font-size:46px;
+      line-height:1.03;
+      letter-spacing:-0.02em;
+    }
+    .accent{color:var(--accent); text-shadow:0 0 22px rgba(0,220,255,0.22);}
+    .sub{margin-top:10px;color:var(--muted);font-size:16px;line-height:1.55;}
+    .statusRow{margin-top:14px;display:flex;flex-wrap:wrap;gap:10px;}
+    .stat{
+      flex: 1 1 200px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,0.04);
+      border-radius:16px;
+      padding:12px;
+      min-width: 220px;
+    }
+    .k{font-size:12px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;}
+    .v{margin-top:6px;font-size:15px;}
+    .bar{
+      margin-top:10px;height:10px;border-radius:999px;background:rgba(255,255,255,0.08);
+      overflow:hidden;border:1px solid rgba(255,255,255,0.08);
+    }
+    .bar > div{
+      height:100%;
+      width: 62%;
+      background: linear-gradient(90deg, rgba(0,220,255,0.9), rgba(122,92,255,0.9));
+    }
+    .panelTitle{font-weight:800;margin:0 0 10px 0;}
+    .form{
+      display:flex;flex-direction:column;gap:10px;
+      margin-top:8px;
+    }
+    input{
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.16);
+      background:rgba(0,0,0,0.18);
+      color:var(--fg);
+      padding:14px 12px;
+      font-size:15px;
+      outline:none;
+    }
+    input::placeholder{color:rgba(182,194,221,0.75);}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      border-radius:14px;
+      padding:12px 14px;
+      font-weight:800;
+      border:1px solid rgba(0,220,255,0.35);
+      background:rgba(0,220,255,0.12);
+      color:var(--fg);
+      cursor:pointer;
+    }
+    .btn:hover{filter:brightness(1.06);}
+    .fine{font-size:12px;color:var(--muted);line-height:1.4;}
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;
+      border-radius:999px;
+      padding:6px 10px;
+      border:1px solid rgba(0,255,179,0.28);
+      background:rgba(0,255,179,0.06);
+      color:var(--good);
+      font-weight:800;
+      font-size:12px;
+      letter-spacing:0.06em;
+      text-transform:uppercase;
+    }
+    .warnBadge{
+      border-color:rgba(255,211,106,0.35);
+      background:rgba(255,211,106,0.08);
+      color:var(--warn);
+    }
+    .divider{height:1px;background:rgba(255,255,255,0.10);margin:14px 0;}
+    .list{margin:0;padding-left:18px;color:var(--muted);font-size:14px;line-height:1.55;}
+    .spark{
+      display:inline-block;
+      width:10px;height:10px;border-radius:4px;
+      background:var(--accent);
+      box-shadow:0 0 18px rgba(0,220,255,0.35);
     }
   </style>
 </head>
+
 <body>
   <div class="wrap">
-    <h1>Conquer <span class="accent">Pike Place</span><br/>in the digital world</h1>
-    <p>
-      You’ve discovered a live digital zone tied to a real-world location.
-      Scan the QR, post content, and battle for influence.
-    </p>
-
-    <div class="card">
-      <p><strong>How it works</strong></p>
-      <p>1. Scan the QR code at this location</p>
-      <p>2. Post a meme or photo to plant your flag</p>
-      <p>3. Earn influence when others boost your post</p>
-
-      <a class="btn" href="#">Enter the Arena</a>
+    <div class="top">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div style="font-weight:900; letter-spacing:0.08em;">DIGITAL CONQUEST</div>
+          <div class="k">Real-world presence. Social influence. Territory control.</div>
+        </div>
+      </div>
+      <div class="pill"><span class="spark"></span> World Status: Under Construction</div>
     </div>
 
-    <div class="hint">
-      Tip: You must be physically near the QR code to compete.
+    <div class="grid">
+      <div class="card">
+        <div class="badge warnBadge">BETA NOT LIVE YET</div>
+        <h1 style="margin-top:10px;">Thanks for your interest.</h1>
+        <h1 style="margin-top:6px;">The world is still <span class="accent">under construction</span>.</h1>
+
+        <p class="sub">
+          You just discovered a future conquest zone. We’re building the first version now.
+          If you want, join the <strong>first-call list</strong> and we’ll notify you when the gates open.
+        </p>
+
+        <div class="statusRow">
+          <div class="stat">
+            <div class="k">Current Mission</div>
+            <div class="v">Launch the first playable zones</div>
+            <div class="bar" aria-label="progress"><div></div></div>
+            <div class="fine" style="margin-top:8px;">Progress indicator is a placeholder for vibe.</div>
+          </div>
+          <div class="stat">
+            <div class="k">What you’ll do</div>
+            <div class="v">Scan → Post → Boost → Take territory</div>
+            <div class="divider"></div>
+            <div class="fine">Zones refresh over time so recent creators stay on top.</div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <p class="panelTitle">What happens next</p>
+        <ul class="list">
+          <li>We’ll invite early players first.</li>
+          <li>You’ll get a heads-up when Pike Place goes live.</li>
+          <li>You can help shape the rules and features.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="badge">FIRST-CALL LIST</div>
+        <p class="panelTitle" style="margin-top:10px;">Get notified when it’s ready</p>
+
+        <!-- Simple mailto capture: no backend needed -->
+        <form class="form" action="mailto:YOUR_EMAIL_HERE?subject=Digital%20Conquest%20Waitlist&body=Please%20add%20me%20to%20the%20first-call%20list.%0A%0AEmail%3A%20" method="post" enctype="text/plain">
+          <input name="email" type="email" placeholder="Your email" required />
+          <button class="btn" type="submit">Request Invite</button>
+        </form>
+
+        <p class="fine" style="margin-top:10px;">
+          This button opens your email app to send a request. It’s the simplest free way to collect interest with no backend.
+        </p>
+
+        <div class="divider"></div>
+
+        <p class="panelTitle">Optional</p>
+        <p class="fine">
+          If you want automatic signups (no email app), we can swap this to a free Google Form in the next step.
+        </p>
+      </div>
     </div>
   </div>
 </body>
