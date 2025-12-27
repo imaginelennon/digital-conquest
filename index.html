@@ -1,339 +1,303 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Digital Conquest — Scavenger Hunt (Coming Soon)</title>
-  <meta name="description" content="A real-world scavenger hunt for social influence. Join the first-call list." />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Digital Conquest — Scavenger Hunt</title>
 
-  <style>
-    :root{
-      --sky:#e9f4ff;
-      --paper:#f7f5ef;
-      --ink:#1f2a2e;
-      --muted:#4b5a55;
-      --accent:#2f6f63;   /* explorer green */
-      --accent2:#ff6a3d;  /* quest orange */
-      --accent3:#3a7dff;  /* map blue */
-      --card:rgba(255,255,255,0.72);
-      --stroke:rgba(31,42,46,0.18);
-      --shadow:rgba(0,0,0,0.10);
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial;
-      color:var(--ink);
-      min-height:100vh;
-      background:
-        radial-gradient(900px 620px at 15% 15%, rgba(58,125,255,0.18), transparent 55%),
-        radial-gradient(900px 620px at 85% 15%, rgba(255,106,61,0.14), transparent 58%),
-        linear-gradient(180deg, var(--sky), #e7f0ea);
-    }
+<style>
+:root{
+  --bg:#eaf4ff;
+  --card:#ffffff;
+  --ink:#1f2a2e;
+  --muted:#5a6b73;
+  --blue:#3a7dff;
+  --green:#2fbf71;
+  --orange:#ff8a3d;
+  --yellow:#ffd23f;
+  --shadow:0 14px 30px rgba(0,0,0,0.12);
+}
 
-    .wrap{max-width:980px;margin:0 auto;padding:22px 18px 80px; position:relative;}
+*{box-sizing:border-box}
 
-    /* Map layer */
-    .mapLayer{
-      position:absolute; inset:0; pointer-events:none; opacity:0.75;
-      background:
-        /* light grid */
-        linear-gradient(rgba(31,42,46,0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(31,42,46,0.06) 1px, transparent 1px);
-      background-size: 42px 42px, 42px 42px;
-      mask-image: radial-gradient(circle at 40% 20%, black 0%, black 55%, transparent 75%);
-    }
-    .routes{
-      position:absolute; inset:-60px -40px; pointer-events:none; opacity:0.5;
-      background:
-        radial-gradient(circle at 15% 30%, rgba(58,125,255,0.18), transparent 55%),
-        radial-gradient(circle at 80% 25%, rgba(255,106,61,0.16), transparent 55%),
-        radial-gradient(circle at 45% 80%, rgba(47,111,99,0.16), transparent 55%);
-    }
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial;
+  background:
+    radial-gradient(circle at 20% 10%, #d8ecff, transparent 45%),
+    radial-gradient(circle at 80% 20%, #fff2cc, transparent 45%),
+    linear-gradient(180deg, var(--bg), #f6fbff);
+  color:var(--ink);
+}
 
-    .top{
-      display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
-      position:relative;
-    }
-    .brand{display:flex;align-items:center;gap:12px;}
-    .logo{
-      width:44px;height:44px;border-radius:14px;
-      background:
-        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.90), transparent 45%),
-        linear-gradient(135deg, rgba(58,125,255,0.95), rgba(47,111,99,0.92));
-      box-shadow: 0 14px 26px var(--shadow);
-      position:relative;
-      overflow:hidden;
-    }
-    .logo:before{
-      content:"";
-      position:absolute; inset:-12px;
-      background:
-        repeating-radial-gradient(circle at 60% 40%,
-          rgba(255,255,255,0.24) 0px, rgba(255,255,255,0.24) 2px,
-          transparent 2px, transparent 11px);
-      opacity:0.55;
-      transform:rotate(14deg);
-    }
-    .pill{
-      display:inline-flex;align-items:center;gap:8px;
-      border:1px solid rgba(31,42,46,0.20);
-      background:rgba(255,255,255,0.70);
-      padding:10px 12px;border-radius:999px;
-      color:var(--muted);font-size:13px;
-      box-shadow: 0 16px 28px rgba(0,0,0,0.06);
-    }
-    .dot{
-      width:10px;height:10px;border-radius:999px;background:var(--accent2);
-      box-shadow:0 0 0 4px rgba(255,106,61,0.18);
-    }
+.wrap{
+  max-width:980px;
+  margin:0 auto;
+  padding:24px 16px 80px;
+}
 
-    .grid{
-      margin-top:16px;
-      display:grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap:14px;
-      position:relative;
-    }
-    @media (max-width: 920px){ .grid{grid-template-columns:1fr;} }
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
 
-    .card{
-      border:1px solid var(--stroke);
-      background:var(--card);
-      border-radius:18px;
-      padding:18px;
-      box-shadow: 0 16px 32px rgba(0,0,0,0.10);
-      position:relative;
-      overflow:hidden;
-    }
-    .card:after{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(circle at 15% 25%, rgba(58,125,255,0.10), transparent 55%),
-        radial-gradient(circle at 90% 10%, rgba(255,106,61,0.10), transparent 60%);
-      pointer-events:none;
-    }
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-weight:900;
+  letter-spacing:0.12em;
+}
 
-    h1{margin:0;font-size:42px;line-height:1.03;letter-spacing:-0.02em; position:relative;}
-    .accent{color:var(--accent3);}
-    .sub{margin-top:10px;color:var(--muted);font-size:16px;line-height:1.55; position:relative;}
+.logoIcon{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  background:linear-gradient(135deg, var(--blue), var(--green));
+  box-shadow:var(--shadow);
+}
 
-    .badge{
-      display:inline-flex;align-items:center;gap:8px;
-      border-radius:999px;
-      padding:7px 10px;
-      border:1px solid rgba(58,125,255,0.28);
-      background:rgba(58,125,255,0.10);
-      color:rgba(31,42,46,0.88);
-      font-weight:900;
-      font-size:12px;
-      letter-spacing:0.10em;
-      text-transform:uppercase;
-      position:relative;
-    }
-    .badge.quest{
-      border-color: rgba(255,106,61,0.32);
-      background: rgba(255,106,61,0.12);
-    }
+.badge{
+  background:#fff;
+  border-radius:999px;
+  padding:10px 14px;
+  font-size:13px;
+  box-shadow:var(--shadow);
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
 
-    .divider{height:1px;background:rgba(31,42,46,0.14);margin:14px 0; position:relative;}
+.dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:var(--orange);
+}
 
-    /* Quest cards */
-    .quests{display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; position:relative; margin-top:12px;}
-    @media (max-width: 920px){ .quests{grid-template-columns:1fr;} }
+.hero{
+  margin-top:20px;
+  display:grid;
+  grid-template-columns:1.2fr 0.8fr;
+  gap:16px;
+}
 
-    .quest{
-      border:1px solid rgba(31,42,46,0.16);
-      background:rgba(255,255,255,0.65);
-      border-radius:16px;
-      padding:12px;
-      position:relative;
-    }
-    .qTop{display:flex; align-items:center; justify-content:space-between; gap:10px;}
-    .qTitle{font-weight:900; font-size:14px;}
-    .xp{
-      font-weight:900; font-size:12px;
-      color:rgba(31,42,46,0.85);
-      border:1px solid rgba(47,111,99,0.25);
-      background:rgba(47,111,99,0.10);
-      padding:4px 8px; border-radius:999px;
-    }
-    .qBody{margin-top:8px; color:var(--muted); font-size:13px; line-height:1.45;}
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr}
+}
 
-    /* Avatars */
-    .avatars{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; position:relative;}
-    .avatar{
-      display:flex; align-items:center; gap:10px;
-      border:1px solid rgba(31,42,46,0.16);
-      background:rgba(255,255,255,0.65);
-      border-radius:16px;
-      padding:10px 12px;
-      min-width: 220px;
-    }
-    .face{
-      width:42px;height:42px;border-radius:14px;
-      box-shadow:0 12px 18px rgba(0,0,0,0.10);
-      position:relative; overflow:hidden;
-      border:1px solid rgba(31,42,46,0.16);
-    }
-    .face.one{ background:linear-gradient(135deg, rgba(58,125,255,0.90), rgba(255,255,255,0.75)); }
-    .face.two{ background:linear-gradient(135deg, rgba(47,111,99,0.90), rgba(255,255,255,0.75)); }
-    .face.three{ background:linear-gradient(135deg, rgba(255,106,61,0.90), rgba(255,255,255,0.75)); }
-    .face:before{
-      content:"";
-      position:absolute; inset:10px 12px auto auto;
-      width:10px; height:10px; border-radius:999px;
-      background:rgba(255,255,255,0.75);
-      filter: blur(0.2px);
-      opacity:0.9;
-    }
-    .aName{font-weight:900;}
-    .aRole{font-size:12px;color:var(--muted);}
+.card{
+  background:var(--card);
+  border-radius:22px;
+  padding:22px;
+  box-shadow:var(--shadow);
+}
 
-    /* Waitlist */
-    .form{display:flex; flex-direction:column; gap:10px; margin-top:10px; position:relative;}
-    input{
-      border-radius:14px;
-      border:1px solid rgba(31,42,46,0.20);
-      background:rgba(255,255,255,0.85);
-      color:var(--ink);
-      padding:14px 12px;
-      font-size:15px;
-      outline:none;
-    }
-    input::placeholder{color:rgba(75,90,85,0.85);}
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;gap:10px;
-      border-radius:14px;
-      padding:12px 14px;
-      font-weight:1000;
-      border:1px solid rgba(255,106,61,0.40);
-      background:rgba(255,106,61,0.16);
-      color:var(--ink);
-      cursor:pointer;
-    }
-    .btn:hover{filter:brightness(1.03);}
-    .fine{font-size:12px;color:rgba(75,90,85,0.95);line-height:1.4; position:relative;}
-  </style>
+h1{
+  font-size:44px;
+  line-height:1.05;
+  margin:0;
+}
+
+h2{
+  margin:0;
+  font-size:22px;
+}
+
+.sub{
+  margin-top:12px;
+  color:var(--muted);
+  font-size:17px;
+  line-height:1.5;
+}
+
+.questRow{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-top:18px;
+}
+
+@media(max-width:900px){
+  .questRow{grid-template-columns:1fr}
+}
+
+.quest{
+  border-radius:18px;
+  padding:14px;
+  background:#f9fbff;
+  border:2px dashed #e2ebf5;
+}
+
+.questTitle{
+  font-weight:900;
+}
+
+.xp{
+  font-size:13px;
+  font-weight:900;
+  color:var(--green);
+}
+
+.avatars{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-top:18px;
+}
+
+@media(max-width:900px){
+  .avatars{grid-template-columns:1fr}
+}
+
+.avatar{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  background:#f9fbff;
+  border-radius:18px;
+  padding:14px;
+}
+
+.face{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  box-shadow:var(--shadow);
+}
+
+.face.scout{background:linear-gradient(135deg,#5fa8ff,#dbe9ff)}
+.face.builder{background:linear-gradient(135deg,#2fbf71,#d7f5e5)}
+.face.challenger{background:linear-gradient(135deg,#ff8a3d,#ffe1cc)}
+
+.role{
+  font-size:13px;
+  color:var(--muted);
+}
+
+.form{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:14px;
+}
+
+input{
+  padding:14px;
+  border-radius:14px;
+  border:2px solid #e2ebf5;
+  font-size:15px;
+}
+
+button{
+  padding:14px;
+  border-radius:14px;
+  border:none;
+  font-size:16px;
+  font-weight:900;
+  background:linear-gradient(135deg,var(--orange),var(--yellow));
+  cursor:pointer;
+}
+
+.small{
+  margin-top:10px;
+  font-size:12px;
+  color:var(--muted);
+}
+</style>
 </head>
 
 <body>
-  <div class="wrap">
-    <div class="mapLayer" aria-hidden="true"></div>
-    <div class="routes" aria-hidden="true"></div>
+<div class="wrap">
 
-    <div class="top">
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <div>
-          <div style="font-weight:1000; letter-spacing:0.10em;">DIGITAL CONQUEST</div>
-          <div style="font-size:13px; color:var(--muted); margin-top:2px;">
-            Scavenger hunt meets social influence.
-          </div>
-        </div>
-      </div>
-
-      <div class="pill">
-        <span class="dot"></span>
-        QUEST FOUND • World under construction
-      </div>
+  <div class="header">
+    <div class="logo">
+      <div class="logoIcon"></div>
+      DIGITAL CONQUEST
     </div>
-
-    <div class="grid">
-      <div class="card">
-        <div class="badge quest">COMING SOON</div>
-
-        <h1 style="margin-top:10px;">
-          Thanks for your interest.
-        </h1>
-        <h1 style="margin-top:6px;">
-          The world is still <span class="accent">under construction</span>.
-        </h1>
-
-        <p class="sub">
-          When the hunt launches, you’ll find real-world QR markers, scan them to unlock a zone,
-          post to plant your flag, and compete to become the local champion.
-        </p>
-
-        <div class="divider"></div>
-
-        <div class="badge">Starter Quests</div>
-        <div class="quests">
-          <div class="quest">
-            <div class="qTop">
-              <div class="qTitle">Scout a Zone</div>
-              <div class="xp">+50 XP</div>
-            </div>
-            <div class="qBody">Find a marker, scan it, and unlock the location feed.</div>
-          </div>
-          <div class="quest">
-            <div class="qTop">
-              <div class="qTitle">Plant a Flag</div>
-              <div class="xp">+100 XP</div>
-            </div>
-            <div class="qBody">Post a meme/photo to claim the spot on the map.</div>
-          </div>
-          <div class="quest">
-            <div class="qTop">
-              <div class="qTitle">Take the Crown</div>
-              <div class="xp">+200 XP</div>
-            </div>
-            <div class="qBody">Earn boosts and climb to #1 in the zone.</div>
-          </div>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="badge">Choose Your Explorer</div>
-        <div class="avatars">
-          <div class="avatar">
-            <div class="face one" aria-hidden="true"></div>
-            <div>
-              <div class="aName">The Scout</div>
-              <div class="aRole">Finds zones first. Moves fast.</div>
-            </div>
-          </div>
-          <div class="avatar">
-            <div class="face two" aria-hidden="true"></div>
-            <div>
-              <div class="aName">The Builder</div>
-              <div class="aRole">Plants flags. Holds territory.</div>
-            </div>
-          </div>
-          <div class="avatar">
-            <div class="face three" aria-hidden="true"></div>
-            <div>
-              <div class="aName">The Challenger</div>
-              <div class="aRole">Takes crowns. Loves battles.</div>
-            </div>
-          </div>
-        </div>
-
-        <p class="fine" style="margin-top:12px;">
-          This is a concept page to gauge interest. Early explorers will shape the rules.
-        </p>
-      </div>
-
-      <div class="card">
-        <div class="badge">FIRST-CALL LIST</div>
-        <div style="font-weight:1000; margin-top:10px;">Get invited first</div>
-        <p class="sub" style="margin-top:8px;">
-          Leave your email and we’ll notify you when the first zones go live.
-        </p>
-
-        <!-- Free, no-backend capture method -->
-        <form class="form" action="mailto:YOUR_EMAIL_HERE?subject=Digital%20Conquest%20Waitlist&body=Please%20add%20me%20to%20the%20first-call%20list.%0A%0AEmail%3A%20" method="post" enctype="text/plain">
-          <input name="email" type="email" placeholder="your@email.com" required />
-          <button class="btn" type="submit">Join Waitlist</button>
-        </form>
-
-        <p class="fine" style="margin-top:12px;">
-          This opens your email app to send the request. Next step, we can switch this to a free Google Form for one-click signup.
-        </p>
-      </div>
+    <div class="badge">
+      <div class="dot"></div>
+      QUEST FOUND · COMING SOON
     </div>
   </div>
+
+  <div class="hero">
+
+    <div class="card">
+      <h1>Battle of the Outdoorsy.<br/>Conquer the city.</h1>
+      <p class="sub">
+        You’ve discovered a real-world scavenger hunt.
+        Find QR markers, scan them, post content, and battle other players
+        to control locations in the digital map.
+      </p>
+
+      <div class="questRow">
+        <div class="quest">
+          <div class="questTitle">Scout a Zone</div>
+          <div class="xp">+50 XP</div>
+          <p class="sub">Find a marker and unlock the area.</p>
+        </div>
+        <div class="quest">
+          <div class="questTitle">Plant a Flag</div>
+          <div class="xp">+100 XP</div>
+          <p class="sub">Post content to claim the spot.</p>
+        </div>
+        <div class="quest">
+          <div class="questTitle">Become Champion</div>
+          <div class="xp">+200 XP</div>
+          <p class="sub">Earn boosts and hold the crown.</p>
+        </div>
+      </div>
+
+      <div class="avatars">
+        <div class="avatar">
+          <div class="face scout"></div>
+          <div>
+            <strong>The Scout</strong>
+            <div class="role">Finds zones first</div>
+          </div>
+        </div>
+        <div class="avatar">
+          <div class="face builder"></div>
+          <div>
+            <strong>The Builder</strong>
+            <div class="role">Holds territory</div>
+          </div>
+        </div>
+        <div class="avatar">
+          <div class="face challenger"></div>
+          <div>
+            <strong>The Challenger</strong>
+            <div class="role">Takes crowns</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Be the first to play</h2>
+      <p class="sub">
+        The world is still under construction.
+        Join the first-call list and we’ll invite you when Pike Place goes live.
+      </p>
+
+      <form class="form"
+        action="mailto:YOUR_EMAIL_HERE?subject=Digital%20Conquest%20Waitlist&body=Please%20add%20me%20to%20the%20waitlist.%0AEmail%3A%20"
+        method="post" enctype="text/plain">
+        <input type="email" placeholder="your@email.com" required />
+        <button type="submit">Join the Hunt</button>
+      </form>
+
+      <div class="small">
+        Early explorers help shape the rules.
+      </div>
+    </div>
+
+  </div>
+
+</div>
 </body>
 </html>
-
